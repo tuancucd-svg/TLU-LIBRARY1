@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh mục đầu sách - Thư viện Đại học Thăng Long</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header>
+        <div class="container header">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../images/logothanglong.png" alt="Logo Đại học Thăng Long">
+                </a>
+            </div>
+
+            <nav>
+                <a href="../index.html">TRANG CHỦ</a>
+                <a href="../index.html#gioithieu">GIỚI THIỆU</a>
+                <a href="../index.html#tinhnang">DỊCH VỤ</a>
+                <a href="books.html" style="color: #A6192E;">DANH MỤC SÁCH</a>
+                <a href="../index.html#lienhe">LIÊN HỆ</a>
+            </nav>
+
+            <div id="authArea" class="auth-controls">
+                <a href="#" class="login" onclick="openAuthModal(event)">⇥ Đăng nhập</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="books-page">
+        <div class="container">
+            <div class="section-title">
+                <span class="sub-title">TRA CỨU & MƯỢN TÀI LIỆU</span>
+                <h2>Danh sách các đầu sách trong thư viện</h2>
+            </div>
+
+            <div class="filter-bar">
+                <input type="text" id="keyword" placeholder="Nhập tên sách, tác giả hoặc mã ISBN..." oninput="loadBooks()">
+                <select id="typeSelect" onchange="loadBooks()">
+                    <option value="ALL">Tất cả loại tài nguyên</option>
+                    <option value="giaotrinh">Giáo trình học tập</option>
+                    <option value="thamkhao">Tài liệu tham khảo</option>
+                    <option value="chuyennganh">Sách chuyên ngành</option>
+                </select>
+                <select id="categorySelect" onchange="loadBooks()">
+                    <option value="ALL">Tất cả chuyên ngành</option>
+                    <option value="CNTT">Công nghệ thông tin</option>
+                    <option value="Kinh tế">Kinh tế - Quản trị</option>
+                    <option value="Ngoại ngữ">Ngoại ngữ</option>
+                </select>
+                <button type="button" onclick="loadBooks()">Tìm kiếm</button>
+            </div>
+
+            <div class="book-grid" id="bookList"></div>
+
+            <div class="borrow-history-box">
+                <h3>Sách đang mượn / Lịch sử mượn trả của bạn</h3>
+                <table class="tlu-table">
+                    <thead>
+                        <tr>
+                            <th>Mã phiếu</th>
+                            <th>Tên sách</th>
+                            <th>Ngày mượn</th>
+                            <th>Hạn trả</th>
+                            <th>Ngày trả</th>
+                            <th>Tiền phạt</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myBorrowsBody">
+                        <tr><td colspan="8">Vui lòng đăng nhập để xem danh sách sách đang mượn.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-content">
+            <div>
+                <h2>THƯ VIỆN THĂNG LONG</h2>
+                <p>Trường Đại học Thăng Long</p>
+                <p>Không gian học tập và nghiên cứu</p>
+            </div>
+            <div>
+                <h3>Danh mục</h3>
+                <p>Giới thiệu</p>
+                <p>Dịch vụ thư viện</p>
+                <p>Tài nguyên học tập</p>
+            </div>
+            <div>
+                <h3>Thông tin liên hệ</h3>
+                <p>Trường Đại học Thăng Long</p>
+                <p>Địa chỉ: Nghiêm Xuân Yêm, Hà Nội</p>
+                <p>Website: thanglong.edu.vn</p>
+            </div>
+        </div>
+        <div class="copyright">
+            Copyright © 2026 - Thư viện Đại học Thăng Long
+        </div>
+    </footer>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialType = urlParams.get('type');
+        if (initialType) {
+            document.getElementById('typeSelect').value = initialType;
+        }
+
+        async function loadBooks() {
+            const q = document.getElementById('keyword').value.trim();
+            const type = document.getElementById('typeSelect').value;
+            const category = document.getElementById('categorySelect').value;
+
+            const params = new URLSearchParams({ q, type, category });
+            const res = await fetch(`/api/books?${params.toString()}`);
+            const books = await res.json();
+            renderBooks(books);
+        }
+
+        function renderBooks(list) {
+            const container = document.getElementById('bookList');
+            if (!list.length) {
+                container.innerHTML = '<p>Không tìm thấy đầu sách phù hợp trong mục này.</p>';
+                return;
+            }
+
+            container.innerHTML = list.map(book => {
+                const available = book.available_qty > 0;
+                return `
+                    <div class="book-card">
+                        <img src="${book.image || 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600'}" alt="${book.title}">
+                        <div class="book-info">
+                            <span class="book-badge">${book.typeLabel || 'Tài liệu'} • ${book.category}</span>
+                            <h3>${book.title}</h3>
+                            <p class="book-meta">Tác giả: <strong>${book.author}</strong></p>
+                            <p class="book-meta">Mã sách: ${book.isbn || 'N/A'}</p>
+                            <p class="book-status ${available ? 'status-ok' : 'status-out'}">
+                                ${available ? `Còn sẵn: ${book.available_qty} / ${book.total_qty} quyển` : `Tạm hết (0 / ${book.total_qty})`}
+                            </p>
+                            <button type="button" class="borrow-btn" ${!available ? 'disabled' : ''} onclick="borrowBook(${book.id})">
+                                ${available ? 'Mượn sách' : 'Hết sách'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function borrowBook(bookId) {
+            const user = getCurrentUser();
+            if (!user) {
+                alert('Bạn cần đăng nhập để mượn sách!');
+                openAuthModal();
+                return;
+            }
+
+            const res = await fetch('/api/borrow', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: user.id, book_id: bookId })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error || 'Mượn sách thất bại');
+
+            alert(`${data.message}\nSố lượng còn lại trong kho: ${data.book.available_qty} quyển.`);
+            loadBooks();
+            loadMyBorrows();
+        }
+
+        async function returnMyBook(recordId) {
+            const res = await fetch(`/api/return/${recordId}`, { method: 'POST' });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error || 'Trả sách thất bại');
+
+            alert(data.message);
+            loadBooks();
+            loadMyBorrows();
+        }
+
+        async function loadMyBorrows() {
+            const user = getCurrentUser();
+            const tbody = document.getElementById('myBorrowsBody');
+            if (!user) {
+                tbody.innerHTML = '<tr><td colspan="8">Vui lòng đăng nhập để xem danh sách sách đang mượn.</td></tr>';
+                return;
+            }
+
+            const res = await fetch(`/api/borrows?userId=${user.id}`);
+            const rows = await res.json();
+            if (!rows.length) {
+                tbody.innerHTML = '<tr><td colspan="8">Bạn chưa có phiếu mượn nào.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = rows.map(r => {
+                const fineText = r.preview_fine > 0
+                    ? `<span style="color:#A6192E;font-weight:bold;">${r.preview_fine.toLocaleString('vi-VN')}đ (${r.preview_overdue_days} ngày trễ)</span>`
+                    : '0đ';
+
+                return `
+                    <tr>
+                        <td>#${r.id}</td>
+                        <td><strong>${r.book_title}</strong></td>
+                        <td>${r.borrow_date}</td>
+                        <td>${r.due_date}</td>
+                        <td>${r.return_date || '-'}</td>
+                        <td>${fineText}</td>
+                        <td>${r.status === 'borrowing' ? '<span style="color:#d97706;font-weight:bold;">Đang mượn</span>' : '<span style="color:#087858;font-weight:bold;">Đã trả</span>'}</td>
+                        <td>
+                            ${r.status === 'borrowing'
+                                ? `<button type="button" class="return-btn" onclick="returnMyBook(${r.id})">Trả sách</button>`
+                                : 'Hoàn tất'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        window.addEventListener('authChanged', loadMyBorrows);
+        loadBooks();
+        loadMyBorrows();
+    </script>
+</body>
+</html>

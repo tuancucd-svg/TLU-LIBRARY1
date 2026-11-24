@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lan tỏa tri thức & Không gian tự học - Thư viện TLU</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- HEADER ĐỒNG BỘ -->
+    <header>
+        <div class="container header">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../images/logothanglong.png" alt="Logo Đại học Thăng Long">
+                </a>
+            </div>
+
+            <nav>
+                <a href="../index.html">TRANG CHỦ</a>
+                <a href="collections.html">KHO HỌC LIỆU</a>
+                <a href="books.html">DANH MỤC SÁCH</a>
+                <a href="space.html" style="color: #A6192E;">LAN TỎA TRI THỨC</a>
+                <a href="../index.html#lienhe">LIÊN HỆ</a>
+            </nav>
+
+            <div id="authArea" class="auth-controls">
+                <a href="#" class="login" onclick="openAuthModal(event)">⇥ Đăng nhập</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- BANNER -->
+    <section class="collection-hero">
+        <div class="container">
+            <span class="sub-title" style="color: #ffd166;">KHÔNG GIAN HỌC TẬP & VĂN HÓA ĐỌC</span>
+            <h1>Lan tỏa tri thức – Kết nối cộng đồng học thuật TLU</h1>
+            <p>
+                Môi trường tự học hiện đại, các hoạt động chia sẻ sách hay và diễn đàn gợi ý tài liệu
+                dành cho sinh viên, giảng viên Đại học Thăng Long.
+            </p>
+        </div>
+    </section>
+
+    <!-- PHẦN 1: KHÔNG GIAN TỰ HỌC & HOẠT ĐỘNG CỘNG ĐỒNG -->
+    <section class="features container">
+        <div class="section-title">
+            <span class="sub-title">MÔI TRƯỜNG HỌC TẬP HIỆN ĐẠI</span>
+            <h2>Không gian tự học & Hoạt động lan tỏa</h2>
+        </div>
+
+        <div class="feature-list">
+            <div class="feature-card">
+                <span>01</span>
+                <h3>Khu Tự học Yên tĩnh (Silent Zone)</h3>
+                <p>
+                    Bố trí bàn học cá nhân có ổ cắm điện, đèn đọc sách và hệ thống điều hòa,
+                    mở cửa từ <strong>07:30 – 21:00</strong> phục vụ sinh viên ôn thi và nghiên cứu sâu.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <span>02</span>
+                <h3>Phòng Thảo luận Nhóm</h3>
+                <p>
+                    Không gian mở trang bị bảng viết và màn hình trình chiếu dành cho các nhóm sinh viên
+                    làm bài tập lớn, đồ án môn học và trao đổi học thuật.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <span>03</span>
+                <h3>CLB Sách & Workshop NCKH</h3>
+                <p>
+                    Tổ chức định kỳ các buổi giới thiệu sách mới, tọa đàm phương pháp nghiên cứu khoa học
+                    và hướng dẫn kỹ năng trích dẫn tài liệu cho sinh viên.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PHẦN 2: TOP SÁCH ĐƯỢC MƯỢN NHIỀU NHẤT (LẤY TỪ MYSQL) -->
+    <section class="books-page">
+        <div class="container">
+            <div class="section-title">
+                <span class="sub-title">XU HƯỚNG ĐỌC TẠI THƯ VIỆN</span>
+                <h2>Top đầu sách được mượn nhiều nhất</h2>
+            </div>
+
+            <div class="book-grid" id="topBooksGrid"></div>
+
+            <!-- PHẦN 3: GÓC REVIEW SÁCH & FORM ĐỀ XUẤT SÁCH -->
+            <div class="knowledge-split">
+                <!-- Cột trái: Góc cảm nhận sách -->
+                <div class="admin-panel">
+                    <h3>Góc chia sẻ cảm nhận sách (Book Review)</h3>
+                    <form id="reviewForm" class="stack-form" onsubmit="submitReview(event)">
+                        <select id="reviewBookSelect" required>
+                            <option value="">-- Chọn cuốn sách bạn muốn nhận xét --</option>
+                        </select>
+                        <select id="reviewRating">
+                            <option value="5">★★★★★ (5/5 - Rất hữu ích)</option>
+                            <option value="4">★★★★☆ (4/5 - Nên đọc)</option>
+                            <option value="3">★★★☆☆ (3/5 - Khá ổn)</option>
+                            <option value="2">★★☆☆☆ (2/5 - Trung bình)</option>
+                            <option value="1">★☆☆☆☆ (1/5 - Chưa phù hợp)</option>
+                        </select>
+                        <textarea id="reviewComment" rows="3" placeholder="Chia sẻ cảm nhận hoặc tóm tắt nội dung hay của cuốn sách..." required></textarea>
+                        <button type="submit" class="borrow-btn">Đăng cảm nhận</button>
+                    </form>
+
+                    <div id="reviewsList" class="reviews-container"></div>
+                </div>
+
+                <!-- Cột phải: Đề xuất bổ sung sách cho thư viện -->
+                <div class="admin-panel" style="border-top-color: var(--red);">
+                    <h3>Đề xuất sách mới cho Thư viện</h3>
+                    <p class="book-meta" style="margin-bottom: 14px;">
+                        Bạn cần giáo trình hoặc sách tham khảo chưa có trong kho? Gửi đề xuất trực tiếp cho Nhân viên & Admin thư viện.
+                    </p>
+                    <form id="suggestionForm" class="stack-form" onsubmit="submitSuggestion(event)">
+                        <input type="text" id="sugSender" placeholder="Họ tên / Mã sinh viên của bạn" required>
+                        <input type="text" id="sugTitle" placeholder="Tên cuốn sách đề xuất nhập thêm" required>
+                        <input type="text" id="sugAuthor" placeholder="Tác giả / Nhà xuất bản (nếu biết)">
+                        <textarea id="sugReason" rows="4" placeholder="Lý do đề xuất hoặc môn học cần sử dụng tài liệu này..."></textarea>
+                        <button type="submit" class="del-btn" style="padding: 11px;">Gửi đề xuất tới Thư viện</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container footer-content">
+            <div>
+                <h2>THƯ VIỆN THĂNG LONG</h2>
+                <p>Trường Đại học Thăng Long</p>
+                <p>Không gian học tập và nghiên cứu</p>
+            </div>
+            <div>
+                <h3>Danh mục</h3>
+                <p>Kho học liệu</p>
+                <p>Danh mục & Mượn sách</p>
+                <p>Lan tỏa tri thức</p>
+            </div>
+            <div>
+                <h3>Thông tin liên hệ</h3>
+                <p>Trường Đại học Thăng Long</p>
+                <p>Địa chỉ: Nghiêm Xuân Yêm, Hà Nội</p>
+                <p>Website: thanglong.edu.vn</p>
+            </div>
+        </div>
+        <div class="copyright">
+            Copyright © 2026 - Thư viện Đại học Thăng Long
+        </div>
+    </footer>
+
+    <script src="../js/mock-db.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function getLocalReviews() {
+            const saved = localStorage.getItem('tlu_reviews_db');
+            if (!saved) {
+                const initReviews = [
+                    {
+                        id: 1,
+                        full_name: 'Sinh viên A40001',
+                        book_title: 'Giáo trình Lập trình C++',
+                        rating: 5,
+                        comment: 'Sách trình bày rõ ràng, nhiều ví dụ thực hành sát với đề thi môn Lập trình cơ sở.',
+                        created_at: '2026-11-18 09:30'
+                    }
+                ];
+                localStorage.setItem('tlu_reviews_db', JSON.stringify(initReviews));
+                return initReviews;
+            }
+            return JSON.parse(saved);
+        }
+
+        function saveLocalReviews(list) {
+            localStorage.setItem('tlu_reviews_db', JSON.stringify(list));
+        }
+
+        function getLocalSuggestions() {
+            return JSON.parse(localStorage.getItem('tlu_suggestions_db') || '[]');
+        }
+
+        function saveLocalSuggestions(list) {
+            localStorage.setItem('tlu_suggestions_db', JSON.stringify(list));
+        }
+
+        async function loadTopBooks() {
+            const grid = document.getElementById('topBooksGrid');
+            let books = [];
+            try {
+                const res = await fetch('/api/books/top');
+                if (!res.ok) throw new Error('API unavailable');
+                books = await res.json();
+            } catch (err) {
+                const localBooks = typeof getLocalBooks === 'function' ? getLocalBooks() : [];
+                const localBorrows = typeof getLocalBorrows === 'function' ? getLocalBorrows() : [];
+                books = localBooks.map(b => ({
+                    ...b,
+                    borrow_count: localBorrows.filter(r => r.book_id === b.id).length + (b.total_qty - b.available_qty)
+                })).sort((a, b) => b.borrow_count - a.borrow_count || b.id - a.id).slice(0, 4);
+            }
+
+            if (!books.length) {
+                grid.innerHTML = '<p>Chưa có dữ liệu sách.</p>';
+                return;
+            }
+
+            grid.innerHTML = books.map((book, idx) => {
+                const available = book.available_qty > 0;
+                return `
+                    <div class="book-card">
+                        <img src="${escapeHtml(book.image || 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600')}" alt="${escapeHtml(book.title)}">
+                        <div class="book-info">
+                            <span class="book-badge">TOP #${idx + 1} • ${book.borrow_count} lượt mượn</span>
+                            <h3>${escapeHtml(book.title)}</h3>
+                            <p class="book-meta">Tác giả: <strong>${escapeHtml(book.author)}</strong></p>
+                            <p class="book-status ${available ? 'status-ok' : 'status-out'}">
+                                ${available ? `Còn sẵn: ${book.available_qty}/${book.total_qty} quyển` : 'Tạm hết sách'}
+                            </p>
+                            <button type="button" class="borrow-btn" ${!available ? 'disabled' : ''} onclick="quickBorrow(${book.id})">
+                                ${available ? 'Mượn nhanh' : 'Hết sách'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function quickBorrow(bookId) {
+            const user = getCurrentUser();
+            if (!user) {
+                alert('Vui lòng đăng nhập để mượn sách!');
+                openAuthModal();
+                return;
+            }
+            try {
+                const res = await fetch('/api/borrow', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: user.id, book_id: bookId })
+                });
+                if (!res.ok) throw new Error('API fallback');
+                const data = await res.json();
+                alert(`${data.message}\nSố lượng còn lại trong kho: ${data.book.available_qty} quyển.`);
+                loadTopBooks();
+                return;
+            } catch (e) {
+                const books = getLocalBooks();
+                const target = books.find(b => b.id === bookId);
+                if (!target || target.available_qty <= 0) return alert('Sách đã hết trong kho!');
+                target.available_qty -= 1;
+                saveLocalBooks(books);
+
+                const borrows = getLocalBorrows();
+                const now = new Date();
+                const due = new Date(now.getTime() + 14 * 86400000);
+                borrows.unshift({
+                    id: borrows.length ? Math.max(...borrows.map(r => r.id)) + 1 : 1,
+                    user_id: user.id,
+                    user_name: user.full_name,
+                    username: user.username,
+                    book_id: target.id,
+                    book_title: target.title,
+                    borrow_date: now.toISOString().slice(0, 10),
+                    due_date: due.toISOString().slice(0, 10),
+                    return_date: null,
+                    status: 'borrowing'
+                });
+                saveLocalBorrows(borrows);
+                alert(`Mượn thành công "${target.title}"!\nSố lượng còn lại trong kho: ${target.available_qty} quyển.`);
+                loadTopBooks();
+            }
+        }
+
+        async function loadBookOptions() {
+            let books = [];
+            try {
+                const res = await fetch('/api/books');
+                if (!res.ok) throw new Error('API unavailable');
+                books = await res.json();
+            } catch (e) {
+                books = typeof getLocalBooks === 'function' ? getLocalBooks() : [];
+            }
+            const select = document.getElementById('reviewBookSelect');
+            select.innerHTML = '<option value="">-- Chọn cuốn sách bạn muốn nhận xét --</option>' +
+                books.map(b => `<option value="${b.id}">${escapeHtml(b.title)} (${escapeHtml(b.author)})</option>`).join('');
+        }
+
+        async function loadReviews() {
+            const container = document.getElementById('reviewsList');
+            let reviews = [];
+            try {
+                const res = await fetch('/api/reviews');
+                if (!res.ok) throw new Error('API unavailable');
+                reviews = await res.json();
+            } catch (e) {
+                reviews = getLocalReviews();
+            }
+
+            if (!reviews.length) {
+                container.innerHTML = '<p class="book-meta" style="margin-top:14px;">Chưa có cảm nhận nào. Hãy là người đầu tiên chia sẻ!</p>';
+                return;
+            }
+
+            container.innerHTML = reviews.map(r => `
+                <div class="review-item">
+                    <div class="review-head">
+                        <strong>${escapeHtml(r.full_name)}</strong>
+                        <span class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                    </div>
+                    <div class="review-book">Sách: <strong>${escapeHtml(r.book_title)}</strong> • ${r.created_at}</div>
+                    <p>${escapeHtml(r.comment)}</p>
+                </div>
+            `).join('');
+        }
+
+        async function submitReview(e) {
+            e.preventDefault();
+            const user = getCurrentUser();
+            if (!user) {
+                alert('Vui lòng đăng nhập để viết cảm nhận sách!');
+                openAuthModal();
+                return;
+            }
+
+            const bookId = parseInt(document.getElementById('reviewBookSelect').value, 10);
+            const rating = parseInt(document.getElementById('reviewRating').value, 10);
+            const comment = document.getElementById('reviewComment').value.trim();
+
+            try {
+                const res = await fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: user.id, book_id: bookId, rating, comment })
+                });
+                if (!res.ok) throw new Error('API fallback');
+                document.getElementById('reviewComment').value = '';
+                loadReviews();
+                return;
+            } catch (err) {
+                const books = typeof getLocalBooks === 'function' ? getLocalBooks() : [];
+                const book = books.find(b => b.id === bookId);
+                const reviews = getLocalReviews();
+                reviews.unshift({
+                    id: reviews.length ? Math.max(...reviews.map(r => r.id)) + 1 : 1,
+                    full_name: user.full_name,
+                    book_title: book ? book.title : 'Tài liệu thư viện',
+                    rating,
+                    comment,
+                    created_at: new Date().toISOString().slice(0, 16).replace('T', ' ')
+                });
+                saveLocalReviews(reviews);
+                document.getElementById('reviewComment').value = '';
+                loadReviews();
+            }
+        }
+
+        async function submitSuggestion(e) {
+            e.preventDefault();
+            const payload = {
+                sender_name: document.getElementById('sugSender').value.trim(),
+                book_title: document.getElementById('sugTitle').value.trim(),
+                author: document.getElementById('sugAuthor').value.trim(),
+                reason: document.getElementById('sugReason').value.trim()
+            };
+
+            try {
+                const res = await fetch('/api/suggestions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error('API fallback');
+                const data = await res.json();
+                alert(data.message);
+                document.getElementById('suggestionForm').reset();
+                prefillSenderName();
+                return;
+            } catch (err) {
+                const list = getLocalSuggestions();
+                list.unshift({
+                    id: list.length ? Math.max(...list.map(s => s.id)) + 1 : 1,
+                    ...payload,
+                    status: 'pending',
+                    created_at: new Date().toISOString().slice(0, 16).replace('T', ' ')
+                });
+                saveLocalSuggestions(list);
+                alert('Đã gửi đề xuất bổ sung sách tới Ban quản lý thư viện!');
+                document.getElementById('suggestionForm').reset();
+                prefillSenderName();
+            }
+        }
+
+        function prefillSenderName() {
+            const user = getCurrentUser();
+            if (user) {
+                document.getElementById('sugSender').value = `${user.full_name} (${user.username})`;
+            }
+        }
+
+        window.addEventListener('authChanged', prefillSenderName);
+        prefillSenderName();
+        loadTopBooks();
+        loadBookOptions();
+        loadReviews();
+    </script>
+</body>
+</html>

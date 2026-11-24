@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới thiệu Kho sách - Thư viện Đại học Thăng Long</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- HEADER ĐỒNG BỘ -->
+    <header>
+        <div class="container header">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../images/logothanglong.png" alt="Logo Đại học Thăng Long">
+                </a>
+            </div>
+
+            <nav>
+                <a href="../index.html">TRANG CHỦ</a>
+                <a href="collections.html" style="color: #A6192E;">KHO HỌC LIỆU</a>
+                <a href="books.html">DANH MỤC & MƯỢN SÁCH</a>
+                <a href="../index.html#lienhe">LIÊN HỆ</a>
+            </nav>
+
+            <div id="authArea" class="auth-controls">
+                <a href="#" class="login" onclick="openAuthModal(event)">⇥ Đăng nhập</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- BANNER GIỚI THIỆU KHO SÁCH -->
+    <section class="collection-hero">
+        <div class="container">
+            <span class="sub-title" style="color: #ffd166;">HỆ THỐNG TÀI NGUYÊN TRI THỨC</span>
+            <h1>Giới thiệu Kho sách Thư viện Đại học Thăng Long</h1>
+            <p>
+                Kho học liệu được tổ chức khoa học theo từng nhóm ngành đào tạo và đối tượng sử dụng,
+                đáp ứng toàn diện nhu cầu học tập tín chỉ, giảng dạy và nghiên cứu khoa học.
+            </p>
+            <div class="collection-stats">
+                <div class="stat-box">
+                    <strong>15.000+</strong>
+                    <span>Đầu sách & Giáo trình</span>
+                </div>
+                <div class="stat-box">
+                    <strong>4 Nhóm</strong>
+                    <span>Chuyên ngành trọng điểm</span>
+                </div>
+                <div class="stat-box">
+                    <strong>100%</strong>
+                    <span>Tra cứu & Mượn trực tuyến</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PHẦN 1: CÁC MỤC SÁCH CÓ TRONG THƯ VIỆN -->
+    <section class="features container">
+        <div class="section-title">
+            <span class="sub-title">CẤU TRÚC KHO TÀI LIỆU</span>
+            <h2>Các phân mục sách chính trong thư viện</h2>
+        </div>
+
+        <div class="collection-grid">
+            <div class="collection-card">
+                <div class="collection-tag">MỤC 01</div>
+                <h3>Giáo trình môn học</h3>
+                <p>
+                    Hệ thống giáo trình bắt buộc và tài liệu giảng dạy chính thức theo đề cương
+                    các học phần của Đại học Thăng Long: Công nghệ thông tin, Kinh tế - Quản trị,
+                    Ngôn ngữ, Khoa học sức khỏe và Toán - Tin ứng dụng.
+                </p>
+            </div>
+
+            <div class="collection-card">
+                <div class="collection-tag">MỤC 02</div>
+                <h3>Sách tham khảo & Chuyên khảo</h3>
+                <p>
+                    Tuyển tập sách chuyên sâu trong và ngoài nước giúp mở rộng kiến thức nền tảng,
+                    cập nhật công nghệ mới, kỹ năng thực hành nghề nghiệp và phương pháp nghiên cứu.
+                </p>
+            </div>
+
+            <div class="collection-card">
+                <div class="collection-tag">MỤC 03</div>
+                <h3>Khóa luận, Luận văn & NCKH</h3>
+                <p>
+                    Lưu trữ các công trình nghiên cứu khoa học của giảng viên, khóa luận tốt nghiệp
+                    tiêu biểu của sinh viên các khóa làm nguồn tư liệu tham khảo học thuật.
+                </p>
+            </div>
+
+            <div class="collection-card">
+                <div class="collection-tag">MỤC 04</div>
+                <h3>Tạp chí chuyên ngành & Ngoại văn</h3>
+                <p>
+                    Các ấn phẩm tạp chí khoa học định kỳ, từ điển chuyên ngành và bộ giáo trình
+                    ngoại ngữ (Tiếng Anh, Tiếng Nhật, Tiếng Trung, Tiếng Hàn) phục vụ chuẩn đầu ra.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PHẦN 2: PHÂN LOẠI SÁCH CHO SINH VIÊN VÀ GIẢNG VIÊN -->
+    <section class="audience">
+        <div class="container">
+            <div class="section-title">
+                <span class="sub-title">PHỤC VỤ BẠN ĐỌC</span>
+                <h2>Tài liệu dành riêng cho Sinh viên & Giảng viên</h2>
+            </div>
+
+            <div class="role-book-grid">
+                <!-- Cột Sinh viên -->
+                <div class="role-book-card">
+                    <div class="role-header student-bg">
+                        <h3>🎓 Kho sách dành cho Sinh viên</h3>
+                        <p>Hỗ trợ học tập trên lớp, ôn thi và làm đồ án môn học</p>
+                    </div>
+                    <ul class="role-list">
+                        <li><strong>Giáo trình đại cương & chuyên ngành:</strong> Đầy đủ bản sao phục vụ mượn theo từng học kỳ.</li>
+                        <li><strong>Sách bài tập, đề cương & hướng dẫn thực hành:</strong> Lập trình, kế toán, tài chính, ngoại ngữ.</li>
+                        <li><strong>Sách kỹ năng mềm & hướng nghiệp:</strong> Tư duy phản biện, kỹ năng thuyết trình, viết CV.</li>
+                        <li><strong>Chính sách mượn:</strong> Sinh viên sử dụng tài khoản thư viện để đặt mượn trực tuyến với thời hạn <strong>14 ngày/lượt</strong>.</li>
+                    </ul>
+                </div>
+
+                <!-- Cột Giảng viên -->
+                <div class="role-book-card">
+                    <div class="role-header lecturer-bg">
+                        <h3>👨‍🏫 Kho sách dành cho Giảng viên & Cán bộ</h3>
+                        <p>Phục vụ biên soạn bài giảng, hướng dẫn khóa luận và nghiên cứu</p>
+                    </div>
+                    <ul class="role-list">
+                        <li><strong>Sách chuyên khảo & Tài liệu gốc:</strong> Các đầu sách lý thuyết chuyên sâu, giáo trình quốc tế.</li>
+                        <li><strong>Tài liệu tham khảo phục vụ giảng dạy:</strong> Nguồn tư liệu đối chiếu khi xây dựng ngân hàng câu hỏi và giáo án.</li>
+                        <li><strong>Tạp chí khoa học & Kỷ yếu hội thảo:</strong> Cập nhật các công bố nghiên cứu mới theo từng lĩnh vực.</li>
+                        <li><strong>Chính sách hỗ trợ:</strong> Ưu tiên tra cứu kho lưu trữ chuyên sâu và đề xuất bổ sung đầu sách mới cho bộ môn.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Nút chuyển sang trang mượn sách -->
+            <div class="collection-cta">
+                <h3>Bạn đã sẵn sàng tìm và mượn tài liệu?</h3>
+                <p>Chuyển sang trang Danh mục sách để kiểm tra số lượng còn trong kho và đăng ký mượn trực tiếp.</p>
+                <a href="books.html" class="banner-btn">Xem danh sách sách & Mượn ngay →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container footer-content">
+            <div>
+                <h2>THƯ VIỆN THĂNG LONG</h2>
+                <p>Trường Đại học Thăng Long</p>
+                <p>Không gian học tập và nghiên cứu</p>
+            </div>
+            <div>
+                <h3>Danh mục</h3>
+                <p>Giới thiệu kho học liệu</p>
+                <p>Dịch vụ thư viện</p>
+                <p>Tra cứu & Mượn trả</p>
+            </div>
+            <div>
+                <h3>Thông tin liên hệ</h3>
+                <p>Trường Đại học Thăng Long</p>
+                <p>Địa chỉ: Nghiêm Xuân Yêm, Hà Nội</p>
+                <p>Website: thanglong.edu.vn</p>
+            </div>
+        </div>
+        <div class="copyright">
+            Copyright © 2026 - Thư viện Đại học Thăng Long
+        </div>
+    </footer>
+
+    <script src="../js/auth.js"></script>
+</body>
+</html>

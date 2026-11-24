@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản trị Thư viện - Đại học Thăng Long</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header>
+        <div class="container header">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../images/logothanglong.png" alt="Logo Đại học Thăng Long">
+                </a>
+            </div>
+            <nav>
+                <a href="../index.html">TRANG CHỦ</a>
+                <a href="books.html">DANH MỤC SÁCH</a>
+                <a href="news.html">TIN TỨC SỰ KIỆN</a>
+                <a href="admin.html" style="color: #A6192E;">QUẢN TRỊ HỆ THỐNG</a>
+            </nav>
+            <div id="authArea" class="auth-controls"></div>
+        </div>
+    </header>
+
+    <section class="books-page">
+        <div class="container">
+            <div id="guardMsg" class="admin-panel" style="display:none; border-top-color:#A6192E;">
+                <h3 style="color:#A6192E;">Không có quyền truy cập</h3>
+                <p style="margin-top:8px;">Chỉ tài khoản <strong>admin</strong> hoặc <strong>staff</strong> mới truy cập được trang này. Vui lòng đăng nhập đúng quyền.</p>
+            </div>
+
+            <div id="managementArea" style="display:none;">
+                <!-- 1. Thêm sách trực tiếp -->
+                <div class="admin-panel">
+                    <h3>Thêm đầu sách trực tiếp vào thư viện</h3>
+                    <div class="admin-form-grid">
+                        <input type="text" id="bookTitle" placeholder="Tên sách">
+                        <input type="text" id="bookAuthor" placeholder="Tác giả">
+                        <select id="bookType">
+                            <option value="giaotrinh">Giáo trình học tập</option>
+                            <option value="thamkhao">Tài liệu tham khảo</option>
+                            <option value="chuyennganh">Sách chuyên ngành</option>
+                        </select>
+                        <select id="bookCategory">
+                            <option value="CNTT">CNTT</option>
+                            <option value="Kinh tế">Kinh tế</option>
+                            <option value="Ngoại ngữ">Ngoại ngữ</option>
+                        </select>
+                        <input type="text" id="bookIsbn" placeholder="Mã ISBN">
+                        <input type="number" id="bookQty" placeholder="Số lượng" min="1" value="5">
+                        <button type="button" class="borrow-btn" style="margin-top:0;" onclick="addBook()">+ Thêm sách</button>
+                    </div>
+                </div>
+
+                <!-- 2. Danh sách kho sách -->
+                <div class="admin-panel">
+                    <h3>Kho sách hiện tại (Cập nhật tức thì)</h3>
+                    <table class="tlu-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên sách</th>
+                                <th>Tác giả</th>
+                                <th>Phân loại</th>
+                                <th>Chuyên ngành</th>
+                                <th>Tổng số</th>
+                                <th>Còn sẵn</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminBooksBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- 3. Đăng thông báo / Tin tức mới -->
+                <div class="admin-panel" style="border-top-color: var(--red);">
+                    <h3>Đăng Thông báo & Tin tức mới (Hiển thị ngay bên trang Tin tức)</h3>
+                    <div class="admin-form-grid">
+                        <input type="text" id="newsTitleInput" placeholder="Tiêu đề thông báo / sự kiện">
+                        <select id="newsCatInput">
+                            <option value="hoatdong">Hoạt động thư viện</option>
+                            <option value="vanhoadoc">Văn hóa đọc</option>
+                            <option value="thongbao">Thông báo mới</option>
+                        </select>
+                        <input type="text" id="newsSummaryInput" placeholder="Tóm tắt ngắn gọn">
+                        <button type="button" class="borrow-btn" style="margin-top:0;" onclick="addNewsPost()">+ Đăng bài viết</button>
+                    </div>
+                    <textarea id="newsContentInput" rows="3" placeholder="Nội dung chi tiết thông báo..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; margin-bottom:12px; font-family:inherit;"></textarea>
+
+                    <table class="tlu-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tiêu đề</th>
+                                <th>Chuyên mục</th>
+                                <th>Ngày đăng</th>
+                                <th>Người đăng</th>
+                                <th>Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminNewsBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- 4. Quản lý mượn trả & tiền phạt -->
+                <div class="admin-panel">
+                    <h3>Quản lý Mượn / Trả & Tiền phạt quá hạn (5.000đ/ngày sau 14 ngày)</h3>
+                    <table class="tlu-table">
+                        <thead>
+                            <tr>
+                                <th>Mã phiếu</th>
+                                <th>Độc giả</th>
+                                <th>Tên sách</th>
+                                <th>Ngày mượn</th>
+                                <th>Hạn trả</th>
+                                <th>Ngày trả</th>
+                                <th>Tiền phạt</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminBorrowsBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- 5. Quản lý nhân sự riêng cho Admin -->
+                <div class="admin-panel" id="adminStaffPanel" style="display:none;">
+                    <h3>Quản lý Nhân sự & Tài khoản (Chỉ Admin)</h3>
+                    <div class="admin-form-grid">
+                        <input type="text" id="staffFullName" placeholder="Họ và tên">
+                        <input type="text" id="staffUsername" placeholder="Tên đăng nhập">
+                        <input type="password" id="staffPassword" placeholder="Mật khẩu">
+                        <select id="staffRole">
+                            <option value="staff">Nhân viên (staff)</option>
+                            <option value="user">Người dùng (user)</option>
+                            <option value="admin">Quản trị (admin)</option>
+                        </select>
+                        <button type="button" class="borrow-btn" style="margin-top:0;" onclick="createStaffAccount()">+ Tạo tài khoản</button>
+                    </div>
+                    <table class="tlu-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên đăng nhập</th>
+                                <th>Họ và tên</th>
+                                <th>Vai trò</th>
+                                <th>Đổi vai trò</th>
+                                <th>Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staffUsersBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        function checkAdminPage() {
+            const user = getCurrentUser();
+            const guard = document.getElementById('guardMsg');
+            const area = document.getElementById('managementArea');
+            const staffPanel = document.getElementById('adminStaffPanel');
+
+            if (!user || (user.role !== 'admin' && user.role !== 'staff')) {
+                guard.style.display = 'block';
+                area.style.display = 'none';
+                return;
+            }
+            guard.style.display = 'none';
+            area.style.display = 'block';
+            staffPanel.style.display = user.role === 'admin' ? 'block' : 'none';
+
+            loadAdminBooks();
+            loadAdminNews();
+            loadAdminBorrows();
+            if (user.role === 'admin') loadStaffUsers();
+        }
+
+        async function addBook() {
+            const title = document.getElementById('bookTitle').value.trim();
+            const author = document.getElementById('bookAuthor').value.trim();
+            const type = document.getElementById('bookType').value;
+            const category = document.getElementById('bookCategory').value;
+            const isbn = document.getElementById('bookIsbn').value.trim();
+            const total_qty = parseInt(document.getElementById('bookQty').value, 10);
+
+            if (!title || !author || isNaN(total_qty) || total_qty < 1) {
+                return alert('Vui lòng nhập đầy đủ tên sách, tác giả và số lượng!');
+            }
+
+            const res = await fetch('/api/books', {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ title, author, type, category, isbn, total_qty })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error);
+
+            document.getElementById('bookTitle').value = '';
+            document.getElementById('bookAuthor').value = '';
+            document.getElementById('bookIsbn').value = '';
+            loadAdminBooks();
+        }
+
+        async function deleteBook(bookId) {
+            if (!confirm('Xác nhận xóa đầu sách này?')) return;
+            const res = await fetch(`/api/books/${bookId}`, {
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error);
+            loadAdminBooks();
+        }
+
+        async function loadAdminBooks() {
+            const res = await fetch('/api/books');
+            const books = await res.json();
+            document.getElementById('adminBooksBody').innerHTML = books.map(b => `
+                <tr>
+                    <td>${b.id}</td>
+                    <td><strong>${b.title}</strong></td>
+                    <td>${b.author}</td>
+                    <td>${b.typeLabel || '-'}</td>
+                    <td>${b.category}</td>
+                    <td>${b.total_qty}</td>
+                    <td><strong style="color:${b.available_qty > 0 ? '#087858' : '#A6192E'};">${b.available_qty}</strong></td>
+                    <td><button type="button" class="del-btn" onclick="deleteBook(${b.id})">Xóa</button></td>
+                </tr>
+            `).join('');
+        }
+
+        // --- QUẢN LÝ TIN TỨC ---
+        async function addNewsPost() {
+            const title = document.getElementById('newsTitleInput').value.trim();
+            const category = document.getElementById('newsCatInput').value;
+            const summary = document.getElementById('newsSummaryInput').value.trim();
+            const content = document.getElementById('newsContentInput').value.trim();
+
+            if (!title || !summary) {
+                return alert('Vui lòng nhập tiêu đề và tóm tắt bài viết!');
+            }
+
+            const res = await fetch('/api/news', {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ title, category, summary, content })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error);
+
+            document.getElementById('newsTitleInput').value = '';
+            document.getElementById('newsSummaryInput').value = '';
+            document.getElementById('newsContentInput').value = '';
+            alert(data.message);
+            loadAdminNews();
+        }
+
+        async function deleteNewsPost(id) {
+            if (!confirm('Xác nhận xóa bài viết này?')) return;
+            const res = await fetch(`/api/news/${id}`, {
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error);
+            loadAdminNews();
+        }
+
+        async function loadAdminNews() {
+            const res = await fetch('/api/news');
+            const news = await res.json();
+            document.getElementById('adminNewsBody').innerHTML = news.map(n => `
+                <tr>
+                    <td>#${n.id}</td>
+                    <td><strong>${n.title}</strong></td>
+                    <td>${n.categoryLabel}</td>
+                    <td>${n.date}</td>
+                    <td>${n.author}</td>
+                    <td><button type="button" class="del-btn" onclick="deleteNewsPost(${n.id})">Xóa</button></td>
+                </tr>
+            `).join('');
+        }
+
+        // --- MƯỢN / TRẢ ---
+        async function adminReturnBook(recordId) {
+            const res = await fetch(`/api/return/${recordId}`, { method: 'POST' });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error);
+
+            alert(data.message);
+            loadAdminBooks();
+            loadAdminBorrows();
+        }
+
+        async function loadAdminBorrows() {
+            const res = await fetch('/api/borrows');
+            const rows = await res.json();
+            document.getElementById('adminBorrowsBody').innerHTML = rows.length
+                ? rows.map(r => {
+                    const fineText = r.preview_fine > 0
+                        ? `<span style="color:#A6192E;font-weight:bold;">${r.preview_fine.toLocaleString('vi-VN')}đ (${r.preview_overdue_days} ngày)</span>`
+                        : '0đ';
+                    return `
+                        <tr>
+                            <td>#${r.id}</td>
+                            <td>${r.user_name} (${r.username})</td>
+                            <td>${r.book_title}</td>
+                            <td>${r.borrow_date}</td>
+                            <td>${r.due_date}</td>
+                            <td>${r.return_date || '-'}</td>
+                            <td>${fineText}</td>
+                            <td>${r.status === 'borrowing' ? 'Đang mượn' : 'Đã trả'}</td>
+                            <td>
+                                ${r.status === 'borrowing'
+                                    ? `<button type="button" class="return-btn" onclick="adminReturnBook(${r.id})">Xác nhận trả</button>`
+                                    : 'Đã trả'}
+                            </td>
+                        </tr>
+                    `;
+                }).join('')
+                : '<tr><td colspan="9">Chưa có phiếu mượn nào.</td></tr>';
+        }
+
+        // --- NHÂN SỰ (CHỈ ADMIN) ---
+        async function loadStaffUsers() {
+            const current = getCurrentUser();
+            const res = await fetch('/api/staff/users', { headers: getAuthHeaders() });
+            if (!res.ok) return;
+            const users = await res.json();
+            document.getElementById('staffUsersBody').innerHTML = users.map(u => `
+                <tr>
+                    <td>${u.id}</td>
+                    <td><strong>${u.username}</strong></td>
+                    <td>${u.full_name}</td>
+                    <td>${u.role}</td>
+                    <td>
+                        <select onchange="changeUserRole(${u.id}, this.value)">
+                            <option value="user" ${u.role === 'user' ? 'selected' : ''}>user</option>
+                            <option value="staff" ${u.role === 'staff' ? 'selected' : ''}>staff</option>
+                            <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>admin</option>
+                        </select>
+                    </td>
+                    <td>
+                        ${u.id === current.id
+                            ? 'Đang dùng'
+                            : `<button type="button" class="del-btn" onclick="deleteUser(${u.id})">Xóa</button>`}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function createStaffAccount() {
+            const full_name = document.getElementById('staffFullName').value.trim();
+            const username = document.getElementById('staffUsername').value.trim();
+            const password = document.getElementById('staffPassword').value.trim();
+            const role = document.getElementById('staffRole').value;
+
+            if (!full_name || !username || !password) return alert('Nhập đầy đủ thông tin tài khoản!');
+            const res = await fetch('/api/staff/users', {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ username, password, full_name, role })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error);
+
+            document.getElementById('staffFullName').value = '';
+            document.getElementById('staffUsername').value = '';
+            document.getElementById('staffPassword').value = '';
+            loadStaffUsers();
+        }
+
+        async function changeUserRole(userId, role) {
+            const res = await fetch(`/api/staff/users/${userId}/role`, {
+                method: 'PATCH',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ role })
+            });
+            if (res.ok) loadStaffUsers();
+        }
+
+        async function deleteUser(userId) {
+            if (!confirm('Xác nhận xóa tài khoản này?')) return;
+            const res = await fetch(`/api/staff/users/${userId}`, {
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error);
+            loadStaffUsers();
+        }
+
+        window.addEventListener('authChanged', checkAdminPage);
+        checkAdminPage();
+    </script>
+</body>
+</html>

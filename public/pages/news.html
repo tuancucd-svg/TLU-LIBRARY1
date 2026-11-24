@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tin tức & Sự kiện - Thư viện Đại học Thăng Long</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- HEADER ĐỒNG BỘ -->
+    <header>
+        <div class="container header">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../images/logothanglong.png" alt="Logo Đại học Thăng Long">
+                </a>
+            </div>
+
+            <nav>
+                <a href="../index.html">TRANG CHỦ</a>
+                <a href="collections.html">KHO HỌC LIỆU</a>
+                <a href="books.html">DANH MỤC SÁCH</a>
+                <a href="news.html" style="color: #A6192E;">TIN TỨC SỰ KIỆN</a>
+                <a href="../index.html#lienhe">LIÊN HỆ</a>
+            </nav>
+
+<div id="authArea" class="auth-controls">
+    <a href="#" class="login" onclick="openAuthModal(event)">⇥ Đăng nhập</a>
+</div>
+        </div>
+    </header>
+
+    <!-- KHU VỰC TIN TỨC & THÔNG BÁO -->
+    <section class="books-page">
+        <div class="container">
+            <div class="section-title">
+                <span class="sub-title">THÔNG TIN & HOẠT ĐỘNG</span>
+                <h2>Tin tức, Sự kiện & Thông báo Thư viện</h2>
+            </div>
+
+            <div class="filter-bar">
+                <input type="text" id="newsKeyword" placeholder="Tìm kiếm tiêu đề thông báo, sự kiện..." oninput="loadNews()">
+                <select id="newsCategorySelect" onchange="loadNews()">
+                    <option value="ALL">Tất cả chuyên mục</option>
+                    <option value="hoatdong">01. Hoạt động thư viện</option>
+                    <option value="vanhoadoc">02. Văn hóa đọc</option>
+                    <option value="thongbao">03. Thông báo mới</option>
+                </select>
+                <button type="button" onclick="loadNews()">Lọc bài viết</button>
+            </div>
+
+            <div class="news-page-grid" id="newsGrid"></div>
+        </div>
+    </section>
+
+    <!-- MODAL ĐỌC CHI TIẾT BÀI VIẾT -->
+    <div id="newsDetailModal" class="tlu-modal" onclick="if(event.target === this) closeNewsDetail()">
+        <div class="news-modal-box">
+            <span class="tlu-modal-close" onclick="closeNewsDetail()">&times;</span>
+            <span id="detailBadge" class="book-badge"></span>
+            <h2 id="detailTitle" style="color: var(--dark-blue); margin: 10px 0 8px;"></h2>
+            <p id="detailMeta" class="book-meta" style="margin-bottom: 14px;"></p>
+            <img id="detailImage" src="" alt="" style="width:100%; height:250px; object-fit:cover; border-radius:8px; margin-bottom:16px;">
+            <div id="detailContent" class="news-detail-body"></div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container footer-content">
+            <div>
+                <h2>THƯ VIỆN THĂNG LONG</h2>
+                <p>Trường Đại học Thăng Long</p>
+                <p>Không gian học tập và nghiên cứu</p>
+            </div>
+            <div>
+                <h3>Danh mục</h3>
+                <p><a href="../index.html#gioithieu">Giới thiệu</a></p>
+                <p><a href="../index.html#tinhnang">Dịch vụ thư viện</a></p>
+                <p><a href="../index.html#tailieu">Tài nguyên học tập</a></p>
+            </div>
+            <div>
+                <h3>Thông tin liên hệ</h3>
+                <p>Trường Đại học Thăng Long</p>
+                <p>Địa chỉ: Nghiêm Xuân Yêm, Hà Nội</p>
+                <p>Website: thanglong.edu.vn</p>
+            </div>
+        </div>
+        <div class="copyright">
+            Copyright © 2026 - Thư viện Đại học Thăng Long
+        </div>
+    </footer>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        let cachedNews = [];
+
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        const initCat = params.get('cat');
+        if (initCat && document.getElementById('newsCategorySelect')) {
+            document.getElementById('newsCategorySelect').value = initCat;
+        }
+
+        async function loadNews() {
+            const q = document.getElementById('newsKeyword').value.trim();
+            const category = document.getElementById('newsCategorySelect').value;
+            const query = new URLSearchParams({ q, category });
+
+            const res = await fetch(`/api/news?${query.toString()}`);
+            cachedNews = await res.json();
+
+            const grid = document.getElementById('newsGrid');
+            if (!cachedNews.length) {
+                grid.innerHTML = '<p>Chưa có bài viết nào trong chuyên mục này.</p>';
+                return;
+            }
+
+            grid.innerHTML = cachedNews.map(item => `
+                <article class="news-article-card" onclick="openNewsDetail(${item.id})">
+                    <img src="${escapeHtml(item.image || 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=700')}" alt="${escapeHtml(item.title)}">
+                    <div class="book-info">
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                            <span class="book-badge">${escapeHtml(item.categoryLabel)}</span>
+                            <span style="font-size:13px; color:var(--gray);">${escapeHtml(item.date)}</span>
+                        </div>
+                        <h3>${escapeHtml(item.title)}</h3>
+                        <p class="book-meta">${escapeHtml(item.summary)}</p>
+                        <span class="read-more-link">Xem chi tiết bài viết →</span>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function openNewsDetail(id) {
+            const item = cachedNews.find(n => n.id === id);
+            if (!item) return;
+
+            document.getElementById('detailBadge').textContent = item.categoryLabel;
+            document.getElementById('detailTitle').textContent = item.title;
+            document.getElementById('detailMeta').textContent = `Đăng ngày: ${item.date} • Người đăng: ${item.author}`;
+            document.getElementById('detailImage').src = item.image || 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=700';
+            document.getElementById('detailContent').textContent = item.content || item.summary;
+
+            document.getElementById('newsDetailModal').style.display = 'flex';
+        }
+
+        function closeNewsDetail() {
+            document.getElementById('newsDetailModal').style.display = 'none';
+        }
+
+        loadNews();
+    </script>
+</body>
+</html>

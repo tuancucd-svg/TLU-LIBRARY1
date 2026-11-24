@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin tài khoản - Thư viện Đại học Thăng Long</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- HEADER ĐỒNG BỘ -->
+    <header>
+        <div class="container header">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../images/logothanglong.png" alt="Logo Đại học Thăng Long">
+                </a>
+            </div>
+
+            <nav>
+                <a href="../index.html">TRANG CHỦ</a>
+                <a href="collections.html">KHO HỌC LIỆU</a>
+                <a href="books.html">DANH MỤC SÁCH</a>
+                <a href="news.html">TIN TỨC SỰ KIỆN</a>
+                <a href="../index.html#lienhe">LIÊN HỆ</a>
+            </nav>
+
+            <div id="authArea" class="auth-controls">
+                <a href="#" class="login" onclick="openAuthModal(event)">⇥ Đăng nhập</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- NỘI DUNG TRANG TÀI KHOẢN -->
+    <section class="books-page">
+        <div class="container">
+            <div class="section-title">
+                <span class="sub-title">HỒ SƠ BẠN ĐỌC</span>
+                <h2>Thông tin tài khoản & Sách đang mượn</h2>
+            </div>
+
+            <!-- Thông báo nếu chưa đăng nhập -->
+            <div id="notLoggedInBox" class="admin-panel" style="display:none; text-align:center; border-top-color:var(--red);">
+                <h3 style="color:var(--red);">Bạn chưa đăng nhập</h3>
+                <p style="margin: 10px 0 18px; color:var(--gray);">
+                    Vui lòng đăng nhập tài khoản sinh viên / bạn đọc để xem thông tin cá nhân và theo dõi thời hạn mượn sách.
+                </p>
+                <button type="button" class="borrow-btn" onclick="openAuthModal()">Đăng nhập ngay</button>
+            </div>
+
+            <!-- Khu vực hiển thị khi đã đăng nhập -->
+            <div id="profileContentArea" style="display:none;">
+                <div class="profile-grid">
+                    <!-- CỘT TRÁI: THÔNG TIN CÁ NHÂN & CẬP NHẬT -->
+                    <div class="admin-panel">
+                        <div class="profile-header-badge">
+                            <div class="profile-avatar" id="avatarInitial">U</div>
+                            <div>
+                                <h3 id="displayFullName" style="margin-bottom:4px;">Tên người dùng</h3>
+                                <span id="displayRoleBadge" class="book-badge">Độc giả</span>
+                            </div>
+                        </div>
+
+                        <form id="profileForm" class="stack-form" onsubmit="updateProfile(event)">
+                            <div>
+                                <label class="profile-label">Tên đăng nhập / Mã thẻ</label>
+                                <input type="text" id="profUsername" disabled style="width:100%; background:#f1f5f9; color:#64748b;">
+                            </div>
+
+                            <div>
+                                <label class="profile-label">Họ và tên *</label>
+                                <input type="text" id="profFullName" placeholder="Nhập họ và tên của bạn" required style="width:100%;">
+                            </div>
+
+                            <div>
+                                <label class="profile-label">Tuổi *</label>
+                                <input type="number" id="profAge" placeholder="Nhập tuổi (vd: 20)" min="15" max="100" required style="width:100%;">
+                            </div>
+
+                            <div>
+                                <label class="profile-label">Địa chỉ liên hệ *</label>
+                                <input type="text" id="profAddress" placeholder="Nhập địa chỉ (vd: Hoàng Mai, Hà Nội)" required style="width:100%;">
+                            </div>
+
+                            <button type="submit" class="borrow-btn" style="margin-top:6px;">Cập nhật thông tin</button>
+                        </form>
+                    </div>
+
+                    <!-- CỘT PHẢI: THỐNG KÊ NHANH & SÁCH ĐANG MƯỢN -->
+                    <div>
+                        <div class="profile-summary-row">
+                            <div class="summary-card">
+                                <span class="summary-label">Sách đang mượn</span>
+                                <strong id="statBorrowingCount" class="summary-value" style="color:var(--blue);">0</strong>
+                            </div>
+                            <div class="summary-card">
+                                <span class="summary-label">Sắp đến hạn / Quá hạn</span>
+                                <strong id="statWarningCount" class="summary-value" style="color:#d97706;">0</strong>
+                            </div>
+                            <div class="summary-card">
+                                <span class="summary-label">Tiền phạt hiện tại</span>
+                                <strong id="statTotalFine" class="summary-value" style="color:var(--red);">0đ</strong>
+                            </div>
+                        </div>
+
+                        <div class="admin-panel">
+                            <h3>Danh sách sách đang mượn & Thời hạn trả</h3>
+                            <div style="overflow-x:auto;">
+                                <table class="tlu-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tên sách</th>
+                                            <th>Loại sách</th>
+                                            <th>Ngày mượn</th>
+                                            <th>Hạn trả</th>
+                                            <th>Thời hạn còn lại</th>
+                                            <th>Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="activeBorrowsBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="admin-panel" style="border-top-color:#087858;">
+                            <h3>Lịch sử sách đã trả</h3>
+                            <div style="overflow-x:auto;">
+                                <table class="tlu-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Tên sách</th>
+                                            <th>Loại sách</th>
+                                            <th>Ngày mượn</th>
+                                            <th>Ngày trả</th>
+                                            <th>Phí quá hạn</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="returnedBorrowsBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container footer-content">
+            <div>
+                <h2>THƯ VIỆN THĂNG LONG</h2>
+                <p>Trường Đại học Thăng Long</p>
+                <p>Không gian học tập và nghiên cứu</p>
+            </div>
+            <div>
+                <h3>Danh mục</h3>
+                <p><a href="../index.html#gioithieu">Giới thiệu</a></p>
+                <p><a href="../index.html#tinhnang">Dịch vụ thư viện</a></p>
+                <p><a href="../index.html#tailieu">Tài nguyên học tập</a></p>
+            </div>
+            <div>
+                <h3>Thông tin liên hệ</h3>
+                <p>Trường Đại học Thăng Long</p>
+                <p>Địa chỉ: Nghiêm Xuân Yêm, Hà Nội</p>
+                <p>Website: thanglong.edu.vn</p>
+            </div>
+        </div>
+        <div class="copyright">
+            Copyright © 2026 - Thư viện Đại học Thăng Long
+        </div>
+    </footer>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        const ROLE_NAMES = {
+            user: 'Sinh viên / Độc giả',
+            staff: 'Nhân viên Thư viện',
+            admin: 'Quản trị viên Hệ thống'
+        };
+
+        function getRemainingDaysInfo(dueDateStr) {
+            const todayStr = new Date().toISOString().slice(0, 10);
+            const today = new Date(`${todayStr}T00:00:00`);
+            const due = new Date(`${dueDateStr}T00:00:00`);
+            const diffDays = Math.round((due - today) / 86400000);
+
+            if (diffDays > 3) {
+                return { badgeClass: 'days-safe', label: `Còn ${diffDays} ngày`, isWarning: false, fine: 0 };
+            }
+            if (diffDays >= 0) {
+                return {
+                    badgeClass: 'days-warn',
+                    label: diffDays === 0 ? 'Hôm nay là hạn trả' : `Còn ${diffDays} ngày (Sắp hết hạn)`,
+                    isWarning: true,
+                    fine: 0
+                };
+            }
+            const overdue = Math.abs(diffDays);
+            const fine = overdue * 5000;
+            return {
+                badgeClass: 'days-overdue',
+                label: `Quá hạn ${overdue} ngày (${fine.toLocaleString('vi-VN')}đ)`,
+                isWarning: true,
+                fine
+            };
+        }
+
+        async function loadProfilePage() {
+            const sessionUser = getCurrentUser();
+            const notLogged = document.getElementById('notLoggedInBox');
+            const content = document.getElementById('profileContentArea');
+
+            if (!sessionUser) {
+                notLogged.style.display = 'block';
+                content.style.display = 'none';
+                return;
+            }
+
+            notLogged.style.display = 'none';
+            content.style.display = 'block';
+
+            let fullUser = sessionUser;
+            try {
+                const res = await fetch('/api/profile', { headers: getAuthHeaders() });
+                if (res.ok) {
+                    const data = await res.json();
+                    fullUser = data.user;
+                    localStorage.setItem('tlu_user', JSON.stringify(fullUser));
+                }
+            } catch (e) {}
+
+            document.getElementById('avatarInitial').textContent = (fullUser.full_name || 'U').trim().charAt(0).toUpperCase();
+            document.getElementById('displayFullName').textContent = fullUser.full_name;
+            document.getElementById('displayRoleBadge').textContent = ROLE_NAMES[fullUser.role] || fullUser.role;
+
+            document.getElementById('profUsername').value = fullUser.username;
+            document.getElementById('profFullName').value = fullUser.full_name || '';
+            document.getElementById('profAge').value = fullUser.age || '';
+            document.getElementById('profAddress').value = fullUser.address || '';
+
+            renderUserLoans(fullUser.id);
+        }
+
+        async function updateProfile(e) {
+            e.preventDefault();
+            const sessionUser = getCurrentUser();
+            if (!sessionUser) return;
+
+            const newName = document.getElementById('profFullName').value.trim();
+            const newAge = parseInt(document.getElementById('profAge').value, 10);
+            const newAddress = document.getElementById('profAddress').value.trim();
+
+            if (!newName || isNaN(newAge) || !newAddress) {
+                alert('Vui lòng nhập đầy đủ Tên, Tuổi và Địa chỉ!');
+                return;
+            }
+
+            const res = await fetch('/api/profile', {
+                method: 'PUT',
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ full_name: newName, age: newAge, address: newAddress })
+            });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error);
+
+            localStorage.setItem('tlu_user', JSON.stringify(data.user));
+            renderHeaderAuth();
+            loadProfilePage();
+            alert(data.message);
+        }
+
+        async function renderUserLoans(userId) {
+            const res = await fetch(`/api/borrows?userId=${userId}`);
+            const userBorrows = await res.json();
+
+            const activeList = userBorrows.filter(r => r.status === 'borrowing');
+            const returnedList = userBorrows.filter(r => r.status === 'returned');
+
+            let warningCount = 0;
+            let totalFine = 0;
+
+            const activeBody = document.getElementById('activeBorrowsBody');
+            if (!activeList.length) {
+                activeBody.innerHTML = '<tr><td colspan="6">Bạn hiện không mượn cuốn sách nào. <a href="books.html" style="color:var(--blue);font-weight:bold;">Mượn sách ngay →</a></td></tr>';
+            } else {
+                activeBody.innerHTML = activeList.map(r => {
+                    const bookTypeText = `${r.book_type_label || 'Tài liệu'} (${r.book_category || 'TLU'})`;
+                    const timeInfo = getRemainingDaysInfo(r.due_date);
+                    if (timeInfo.isWarning) warningCount++;
+                    totalFine += timeInfo.fine;
+
+                    return `
+                        <tr>
+                            <td><strong>${r.book_title}</strong></td>
+                            <td><span class="book-badge">${bookTypeText}</span></td>
+                            <td>${r.borrow_date}</td>
+                            <td>${r.due_date}</td>
+                            <td><span class="days-badge ${timeInfo.badgeClass}">${timeInfo.label}</span></td>
+                            <td>
+                                <button type="button" class="return-btn" onclick="returnFromProfile(${r.id})">Trả sách</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            document.getElementById('statBorrowingCount').textContent = activeList.length;
+            document.getElementById('statWarningCount').textContent = warningCount;
+            document.getElementById('statTotalFine').textContent = `${totalFine.toLocaleString('vi-VN')}đ`;
+
+            const returnedBody = document.getElementById('returnedBorrowsBody');
+            if (!returnedList.length) {
+                returnedBody.innerHTML = '<tr><td colspan="5">Chưa có lịch sử trả sách.</td></tr>';
+            } else {
+                returnedBody.innerHTML = returnedList.map(r => {
+                    const bookTypeText = `${r.book_type_label || 'Tài liệu'} (${r.book_category || 'TLU'})`;
+                    const fine = r.fine_amount || 0;
+
+                    return `
+                        <tr>
+                            <td><strong>${r.book_title}</strong></td>
+                            <td>${bookTypeText}</td>
+                            <td>${r.borrow_date}</td>
+                            <td>${r.return_date || '-'}</td>
+                            <td>${fine > 0 ? `<span style="color:var(--red);font-weight:bold;">${fine.toLocaleString('vi-VN')}đ</span>` : '0đ'}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        }
+
+        async function returnFromProfile(recordId) {
+            const res = await fetch(`/api/return/${recordId}`, { method: 'POST' });
+            const data = await res.json();
+            if (!res.ok) return alert(data.error);
+
+            alert(data.message);
+            loadProfilePage();
+        }
+
+        window.addEventListener('authChanged', loadProfilePage);
+        loadProfilePage();
+    </script>
+</body>
+</html>

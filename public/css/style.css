@@ -1,0 +1,1479 @@
+
+/* ==============================
+   1. THIẾT LẬP CHUNG
+============================== */
+
+:root {
+    --red: #A6192E;
+    --blue: #0756A5;
+    --dark-blue: #092D55;
+    --light-blue: #EEF5FC;
+    --white: #FFFFFF;
+    --text: #333333;
+    --gray: #666666;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.container {
+    width: 85%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+
+/* ==============================
+   2. HEADER VÀ LOGO
+============================== */
+
+
+/* HEADER */
+header {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header {
+    width: 92%;
+    max-width: 1600px;
+    min-height: 90px;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+/* LOGO */
+.logo {
+    flex-shrink: 0;
+}
+
+.logo img {
+    width: 85px;
+    height: 75px;
+    object-fit: contain;
+    display: block;
+}
+
+/* MENU */
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 35px;
+    flex: 1;
+    white-space: nowrap;
+}
+
+nav a {
+    color: #333;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #A6192E;
+}
+
+/* NÚT ĐĂNG NHẬP */
+.login {
+    flex-shrink: 0;
+    background: #087858;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+.login:hover {
+    background: #A6192E;
+}
+
+
+
+/* ==============================
+   3. BANNER SLIDE
+============================== */
+
+.banner {
+    height: 520px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+    touch-action: pan-y;
+}
+
+.slides {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s ease-in-out;
+}
+
+.slide {
+    flex: 0 0 100%;
+    height: 100%;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(5, 35, 85, 0.85),
+        rgba(166, 25, 46, 0.35)
+    );
+}
+
+.banner-content {
+    position: absolute;
+    top: 50%;
+    left: 12%;
+    transform: translateY(-50%);
+    color: white;
+    z-index: 2;
+    max-width: 650px;
+}
+
+.banner-content h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.banner-content h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.banner-content p {
+    font-size: 17px;
+    margin-bottom: 25px;
+}
+
+.banner-btn {
+    display: inline-block;
+    background: var(--red);
+    color: white;
+    padding: 12px 26px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.banner-btn:hover {
+    background: var(--blue);
+}
+
+.dots {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 5;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.dot.active,
+.dot:hover {
+    background: white;
+    transform: scale(1.2);
+}
+
+
+/* ==============================
+   4. TIÊU ĐỀ CÁC KHU VỰC
+============================== */
+
+.section-title {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.sub-title {
+    color: var(--red);
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.section-title h2 {
+    color: var(--blue);
+    font-size: 32px;
+    margin-top: 8px;
+}
+
+
+/* ==============================
+   5. GIỚI THIỆU
+============================== */
+
+.intro {
+    display: flex;
+    align-items: center;
+    gap: 55px;
+    padding: 90px 0;
+}
+
+.intro-image,
+.intro-content {
+    width: 50%;
+}
+
+.intro-image img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.intro-content h2 {
+    color: var(--blue);
+    font-size: 35px;
+    margin: 10px 0 20px;
+}
+
+.intro-content p {
+    color: var(--gray);
+    margin-bottom: 25px;
+}
+
+.more-btn {
+    display: inline-block;
+    background: var(--red);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.more-btn:hover {
+    background: var(--blue);
+}
+
+
+/* ==============================
+   6. ĐỐI TƯỢNG
+============================== */
+
+.audience {
+    background: var(--light-blue);
+    padding: 80px 0;
+}
+
+.audience-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.audience-card {
+    background: white;
+    padding: 35px 25px;
+    text-align: center;
+    border-radius: 10px;
+    border-bottom: 4px solid var(--blue);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: 0.3s;
+}
+
+.audience-card:hover {
+    transform: translateY(-7px);
+    border-bottom-color: var(--red);
+}
+
+.card-icon {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.audience-card h3 {
+    color: var(--blue);
+    margin-bottom: 10px;
+}
+
+
+/* ==============================
+   7. TÍNH NĂNG
+============================== */
+
+.features {
+    padding: 85px 0;
+}
+
+.feature-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.feature-card {
+    padding: 30px;
+    background: var(--light-blue);
+    border-top: 4px solid var(--red);
+    border-radius: 7px;
+    transition: 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+}
+
+.feature-card span {
+    font-size: 35px;
+    font-weight: bold;
+    color: var(--red);
+}
+
+.feature-card h3 {
+    color: var(--blue);
+    margin: 15px 0;
+}
+
+
+/* ==============================
+   8. TIN TỨC
+============================== */
+
+.news {
+    background: var(--light-blue);
+    padding: 85px 0;
+}
+
+.news-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.news-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.news-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.news-card img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+}
+
+.news-content {
+    padding: 20px;
+}
+
+.news-content h3 {
+    color: var(--blue);
+    margin-bottom: 10px;
+}
+
+.news-content p {
+    color: var(--gray);
+}
+
+
+/* ==============================
+   9. FOOTER
+============================== */
+
+footer {
+    background: var(--dark-blue);
+    color: white;
+    padding-top: 55px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding-bottom: 40px;
+}
+
+.footer-content h3 {
+    margin-bottom: 15px;
+}
+
+.footer-content p {
+    color: #D0DCE5;
+    margin-bottom: 8px;
+}
+
+.copyright {
+    background: #061F3B;
+    border-top: 1px solid #456075;
+    text-align: center;
+    padding: 18px;
+    font-size: 14px;
+}
+
+
+/* ==============================
+   10. RESPONSIVE
+============================== */
+
+@media (max-width: 768px) {
+
+    .container {
+        width: 92%;
+    }
+
+    .header {
+        flex-wrap: wrap;
+        padding: 15px 0;
+    }
+
+    nav {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .banner {
+        height: 400px;
+    }
+
+    .banner-content {
+        left: 6%;
+        right: 6%;
+    }
+
+    .banner-content h1 {
+        font-size: 30px;
+    }
+
+    .banner-content h2 {
+        font-size: 22px;
+    }
+
+    .intro {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .intro-image,
+    .intro-content {
+        width: 100%;
+    }
+
+    .audience-list,
+    .feature-list,
+    .news-list,
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==============================
+   11. MODAL ĐĂNG NHẬP & TRANG SÁCH / ADMIN
+============================== */
+
+.auth-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.user-greeting {
+    font-weight: bold;
+    color: var(--dark-blue);
+    font-size: 14px;
+}
+
+.admin-nav-btn {
+    background: var(--blue);
+    color: #fff;
+    padding: 9px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.logout-nav-btn {
+    background: var(--red);
+    color: #fff;
+    padding: 9px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Modal */
+.tlu-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.tlu-modal-box {
+    background: #fff;
+    width: 380px;
+    max-width: 92%;
+    padding: 28px 24px 24px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.tlu-modal-close {
+    position: absolute;
+    right: 16px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #777;
+}
+
+.tlu-modal-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.tlu-modal-tabs button {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background: #f5f7fa;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.tlu-modal-tabs button.active {
+    background: var(--red);
+    color: #fff;
+    border-color: var(--red);
+}
+
+.tlu-modal-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tlu-modal-box input {
+    padding: 11px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.tlu-modal-submit {
+    padding: 11px;
+    background: #087858;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+/* Trang Danh mục sách & Admin */
+.books-page {
+    padding: 50px 0 80px;
+    background: var(--light-blue);
+    min-height: 75vh;
+}
+
+.filter-bar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    background: #fff;
+    padding: 18px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
+
+.filter-bar input,
+.filter-bar select {
+    padding: 11px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.filter-bar input {
+    flex: 1;
+    min-width: 240px;
+}
+
+.filter-bar button {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 45px;
+}
+
+.book-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    border-top: 4px solid var(--blue);
+}
+
+.book-card img {
+    width: 100%;
+    height: 195px;
+    object-fit: cover;
+}
+
+.book-info {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.book-badge {
+    width: fit-content;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--blue);
+    background: var(--light-blue);
+    padding: 3px 10px;
+    border-radius: 4px;
+}
+
+.book-info h3 {
+    color: var(--dark-blue);
+    font-size: 17px;
+}
+
+.book-meta {
+    font-size: 14px;
+    color: var(--gray);
+}
+
+.book-status {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: auto;
+    padding-top: 6px;
+}
+
+.status-ok { color: #087858; }
+.status-out { color: var(--red); }
+
+.borrow-btn {
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: #087858;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.borrow-btn:hover:not(:disabled) {
+    background: var(--red);
+}
+
+.borrow-btn:disabled {
+    background: #b0b8c1;
+    cursor: not-allowed;
+}
+
+.return-btn {
+    padding: 7px 12px;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.del-btn {
+    padding: 7px 12px;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.borrow-history-box,
+.admin-panel {
+    background: #fff;
+    padding: 24px;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    margin-bottom: 28px;
+    border-top: 4px solid var(--blue);
+}
+
+.borrow-history-box h3,
+.admin-panel h3 {
+    color: var(--dark-blue);
+    margin-bottom: 14px;
+}
+
+.admin-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.admin-form-grid input,
+.admin-form-grid select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.tlu-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.tlu-table th,
+.tlu-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    font-size: 14px;
+}
+
+.tlu-table th {
+    background: var(--light-blue);
+    color: var(--dark-blue);
+}
+
+@media (max-width: 992px) {
+    .book-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+    .book-grid { grid-template-columns: 1fr; }
+}
+
+/* ==============================
+   12. TRANG GIỚI THIỆU KHO SÁCH (collections.html)
+============================== */
+
+.collection-hero {
+    background: linear-gradient(120deg, var(--dark-blue), var(--blue));
+    color: #fff;
+    padding: 65px 0;
+    text-align: center;
+}
+
+.collection-hero h1 {
+    font-size: 36px;
+    margin: 10px 0 16px;
+}
+
+.collection-hero p {
+    max-width: 760px;
+    margin: 0 auto 32px;
+    color: #e2e8f0;
+    font-size: 16px;
+}
+
+.collection-stats {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.stat-box {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 16px 28px;
+    border-radius: 10px;
+    min-width: 190px;
+}
+
+.stat-box strong {
+    display: block;
+    font-size: 26px;
+    color: #ffd166;
+}
+
+.stat-box span {
+    font-size: 14px;
+    color: #f1f5f9;
+}
+
+.collection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.collection-card {
+    background: var(--light-blue);
+    padding: 28px;
+    border-radius: 10px;
+    border-left: 5px solid var(--blue);
+    transition: 0.3s;
+}
+
+.collection-card:hover {
+    transform: translateY(-4px);
+    border-left-color: var(--red);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.collection-tag {
+    display: inline-block;
+    background: var(--red);
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.collection-card h3 {
+    color: var(--dark-blue);
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.collection-card p {
+    color: var(--gray);
+    font-size: 15px;
+}
+
+.role-book-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+}
+
+.role-book-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.role-header {
+    padding: 22px 26px;
+    color: #fff;
+}
+
+.student-bg {
+    background: var(--blue);
+}
+
+.lecturer-bg {
+    background: var(--red);
+}
+
+.role-header h3 {
+    font-size: 21px;
+    margin-bottom: 6px;
+}
+
+.role-header p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.role-list {
+    list-style: none;
+    padding: 24px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.role-list li {
+    font-size: 15px;
+    color: var(--text);
+    padding-left: 16px;
+    border-left: 3px solid var(--light-blue);
+}
+
+.collection-cta {
+    margin-top: 40px;
+    background: #fff;
+    padding: 32px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.collection-cta h3 {
+    color: var(--dark-blue);
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.collection-cta p {
+    color: var(--gray);
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .collection-grid,
+    .role-book-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==============================
+   13. TRANG LAN TỎA TRI THỨC (space.html)
+============================== */
+
+.knowledge-split {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 26px;
+    align-items: start;
+}
+
+.stack-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stack-form input,
+.stack-form select,
+.stack-form textarea {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.reviews-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 360px;
+    overflow-y: auto;
+}
+
+.review-item {
+    background: var(--light-blue);
+    padding: 14px 16px;
+    border-radius: 8px;
+    border-left: 4px solid var(--blue);
+}
+
+.review-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+    color: var(--dark-blue);
+}
+
+.review-stars {
+    color: #d97706;
+    font-size: 15px;
+    letter-spacing: 1px;
+}
+
+.review-book {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 6px;
+}
+
+.review-item p {
+    font-size: 14px;
+    color: var(--text);
+}
+
+@media (max-width: 900px) {
+    .knowledge-split {
+        grid-template-columns: 1fr;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+footer a {
+    color: inherit;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+footer a:hover {
+    color: #ffd166;
+    padding-left: 4px;
+}
+
+/* ==============================
+   14. TRANG TIN TỨC & SỰ KIỆN (news.html)
+============================== */
+
+.news-page-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.news-article-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    border-top: 4px solid var(--blue);
+    transition: 0.3s;
+}
+
+.news-article-card:hover {
+    transform: translateY(-5px);
+    border-top-color: var(--red);
+}
+
+.news-article-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.read-more-link {
+    margin-top: auto;
+    padding-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--red);
+}
+
+.news-modal-box {
+    background: #fff;
+    width: 680px;
+    max-width: 92%;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 28px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+}
+
+.news-detail-body {
+    white-space: pre-line;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text);
+}
+
+@media (max-width: 900px) {
+    .news-page-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==============================
+   15. TRANG HỒ SƠ CÁ NHÂN (profile.html)
+============================== */
+
+.user-profile-link {
+    font-weight: bold;
+    color: var(--dark-blue);
+    background: var(--light-blue);
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.user-profile-link:hover {
+    background: var(--blue);
+    color: #fff;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 26px;
+    align-items: start;
+}
+
+.profile-header-badge {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.profile-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    font-size: 22px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.profile-label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--dark-blue);
+    margin-bottom: 5px;
+}
+
+.profile-summary-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.summary-card {
+    background: #fff;
+    padding: 18px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.summary-label {
+    display: block;
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 6px;
+}
+
+.summary-value {
+    font-size: 26px;
+}
+
+.days-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.days-safe {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.days-warn {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.days-overdue {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+@media (max-width: 960px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+    .profile-summary-row {
+        grid-template-columns: 1fr;
+    }
+}
+/* ==============================
+   16. HEADER & USER DROPDOWN HIỆN ĐẠI (MỌI ĐỘ PHÂN GIẢI)
+============================== */
+
+header {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #eef2f6;
+    box-shadow: 0 2px 12px rgba(9, 45, 85, 0.06);
+}
+
+.header {
+    width: 92%;
+    max-width: 1520px;
+    min-height: 76px;
+    gap: clamp(16px, 2vw, 36px);
+}
+
+.logo img {
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+}
+
+nav {
+    gap: clamp(16px, 2.2vw, 38px);
+}
+
+nav a {
+    position: relative;
+    color: var(--dark-blue);
+    font-size: clamp(14px, 0.95vw, 15.5px);
+    font-weight: 600;
+    padding: 6px 2px;
+    letter-spacing: 0.3px;
+}
+
+nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2.5px;
+    background: var(--red);
+    border-radius: 2px;
+    transition: width 0.25s ease;
+}
+
+nav a:hover {
+    color: var(--red);
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* Nút Đăng nhập thanh thoát */
+.login {
+    background: var(--red);
+    color: #fff;
+    padding: 9px 22px;
+    border-radius: 999px;
+    font-size: 14.5px;
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(166, 25, 46, 0.22);
+    transition: all 0.25s ease;
+}
+
+.login:hover {
+    background: var(--dark-blue);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(9, 45, 85, 0.25);
+}
+
+/* Cụm User Pill & Dropdown */
+.user-menu-wrapper {
+    position: relative;
+}
+
+.user-pill-btn {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: #f8fafc;
+    border: 1px solid #dbe4ee;
+    padding: 5px 14px 5px 6px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.user-pill-btn:hover {
+    background: var(--light-blue);
+    border-color: var(--blue);
+}
+
+.user-pill-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--dark-blue));
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.user-pill-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dark-blue);
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-pill-arrow {
+    font-size: 12px;
+    color: var(--gray);
+}
+
+.user-dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    width: 245px;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 12px 30px rgba(9, 45, 85, 0.14);
+    padding: 8px;
+    z-index: 999;
+}
+
+.user-dropdown-menu.show {
+    display: block;
+    animation: fadeDrop 0.18s ease;
+}
+
+@keyframes fadeDrop {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-user-header {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 6px;
+}
+
+.dropdown-user-header strong {
+    display: block;
+    font-size: 14.5px;
+    color: var(--dark-blue);
+}
+
+.dropdown-user-header span {
+    font-size: 12.5px;
+    color: var(--gray);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    transition: background 0.15s;
+}
+
+.dropdown-item:hover {
+    background: var(--light-blue);
+    color: var(--blue);
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #f1f5f9;
+    margin: 6px 0;
+}
+
+.dropdown-logout {
+    color: var(--red);
+    font-weight: 600;
+}
+
+.dropdown-logout:hover {
+    background: #fef2f2;
+    color: var(--red);
+}
+
+@media (max-width: 1120px) {
+    .header {
+        flex-wrap: wrap;
+        padding: 10px 0;
+    }
+    nav {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        gap: 16px;
+        padding-top: 8px;
+        border-top: 1px solid #f1f5f9;
+    }
+}
